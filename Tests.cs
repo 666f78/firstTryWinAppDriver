@@ -13,13 +13,13 @@ namespace task1
                 .CheckStartWithWindows();
         }
 
-        [Test]
-        public void SingInWithWrongData()
+        [Test, TestCaseSource(nameof(TestData.SingInWrongData))]
+        public void SingInWithWrongData(string Email, string Password)
         {
             new MainPage(driver)
                 .OpenRemoteManager()
-                .SendTextToEmail("123123")
-                .SendTextToPassword("ewqqwe")
+                .SendTextToEmail(Email)
+                .SendTextToPassword(Password)
                 .ClickToSingIn()
                 .CheckMessageBoxWrongData();
         }

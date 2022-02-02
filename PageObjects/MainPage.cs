@@ -29,48 +29,63 @@ namespace task1.PageObjects
 
         public MainPage OpenRemoteManager()
         {
-            driver.FindElement(fileTransferLocator).Click();
+            driver.FindAndClick(fileTransferLocator);
             return this;
         }
 
         public MainPage SendTextToEmail(string testData)
         {
-            driver.FindElement(fileTransferEmailLocator).Clear();
-            driver.FindElement(fileTransferEmailLocator).SendKeys(testData);
+            SendTextTo(testData,"Email");
             return this;
         }
 
         public MainPage SendTextToPassword(string testData)
         {
-            driver.FindElement(fileTransferPasswordLocator).Clear();
-            driver.FindElement(fileTransferPasswordLocator).SendKeys(testData);
+            SendTextTo(testData, "Password");
             return this;
         }
 
         public MainPage ClickToSingIn()
         {
-            driver.FindElement(fileTransferSingInLocator).Click();
+            driver.FindAndClick(fileTransferSingInLocator);
             return this;
         }
         public MainPage CheckMessageBoxWrongData()
         {
             Thread.Sleep(2000);
             var popUpText = driver.FindElement(fileTransferPopUpTextLocator).Text;
-            Assert.IsTrue(popUpText.Contains("Имя пользователя и пароль, которые вы ввели, не совпадают ни с какими учетными записями"));
-            driver.FindElement(fileTransferPopUpOkButtonLocator).Click();
+            Assert.IsTrue(popUpText.CheckPopUpMessageWithWrongData());
+            driver.FindAndClick(fileTransferPopUpOkButtonLocator);
             return this;
         }
         public MainPage SelectFileTransfer()
         {
-            driver.FindElement(comboBoxLocator).Click();
-            driver.FindElement(comboBoxFileTransferLocator).Click();
+            driver.FindAndClick(comboBoxLocator);
+            driver.FindAndClick(comboBoxFileTransferLocator);
             return this;
         }
 
         public MainPage CheckStartWithWindows()
         {
-            driver.FindElement(CheckStartWithWindowsLocator).Click();
+            driver.FindAndClick(CheckStartWithWindowsLocator);
             return this;
+        }
+        private void SendTextTo(string testData, string to)
+        {
+            By locator = null;
+            switch (to)
+            {
+                case "Email":
+                    locator = fileTransferEmailLocator;
+                    break;
+                case "Password":
+                    locator = fileTransferPasswordLocator;
+                    break;
+                default:
+                    break;
+            }
+            driver.FindAndClear(locator);
+            driver.FindElement(locator).SendKeys(testData);
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Appium.Windows;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace task1
 {
@@ -13,7 +10,7 @@ namespace task1
             return str.Contains("Имя пользователя и пароль, которые вы ввели, не совпадают ни с какими учетными записями");
         }
 
-        public static void FindAndClick(this WindowsDriver<WindowsElement> driver,By locator)
+        public static void FindAndClick(this WindowsDriver<WindowsElement> driver, By locator)
         {
             driver.FindElement(locator).Click();
         }

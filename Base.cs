@@ -43,7 +43,8 @@ namespace task1
         }
 
         [OneTimeTearDown]
-        public void OneTime() {
+        public void OneTime()
+        {
             Array.ForEach(Process.GetProcessesByName("WinAppDriver"), x => x.Kill());
         }
 

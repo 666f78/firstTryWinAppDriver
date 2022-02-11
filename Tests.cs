@@ -31,5 +31,25 @@ namespace task1
             new MainPage(driver)
                 .SelectFileTransfer();
         }
+
+        [Test]
+        public void DEBUG()
+        {
+            int id = 1;
+            switch (id)
+            {
+                case 0:
+                    Assert.Ignore(); //Ingore
+                    break;
+                case 1:
+                    Assert.True((2 + 2) == 5, "Test Error Message"); //Fail
+                    break;
+                case 2:
+                    Assert.True((2 + 2) == 4); //Pass
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace task1.PageObjects
 
         public MainPage SendTextToEmail(string testData)
         {
-            SendTextTo(testData,"Email");
+            SendTextTo(testData, "Email");
             return this;
         }
 

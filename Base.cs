@@ -14,7 +14,7 @@ namespace task1
     [TestFixture]
     public class Base
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected WindowsDriver<WindowsElement> driver;
         private readonly IConfiguration Config = new ConfigSetUp().Config;
 
@@ -33,6 +33,7 @@ namespace task1
             options.AddAdditionalCapability("deviceName", "WindowsPC");
             driver = new WindowsDriver<WindowsElement>(new Uri("http://127.0.0.1:4723"), options);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            log.Info($"Start test case {TestContext.CurrentContext.Test.Name}");
         }
 
         [TearDown]

@@ -13,8 +13,10 @@ namespace task1
             new MainPage(driver)
                 .CheckStartWithWindows();
         }
-
-        [Test, TestCaseSource(typeof(TestData), nameof(TestData.SingInWrongData))]
+        
+        [Test]
+        [Description("TC - 666")]
+        [TestCaseSource(typeof(TestData), nameof(TestData.SingInWrongData))]
         public void SingInWithWrongData(string Email, string Password)
         {
             new MainPage(driver)

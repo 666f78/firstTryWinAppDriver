@@ -5,10 +5,9 @@ using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Windows;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Management.Automation;
-
-[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
+using task1.Config;
+using task1.Log;
 
 namespace task1
 {
@@ -17,13 +16,12 @@ namespace task1
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected WindowsDriver<WindowsElement> driver;
-        private IConfiguration Config;
+        private readonly IConfiguration Config = new ConfigSetUp().Config;
 
         [OneTimeSetUp]
         public void DoBeforeAllTests()
         {
-            SetUpConfig();
-            SetUpLog4net();
+            new Logger(Config.GetSection("Folders")["Logs"]);
             StartWinDriver();
         }
 
@@ -49,7 +47,7 @@ namespace task1
             {
                 string error = TestContext.CurrentContext.Test.FullName + TestContext.CurrentContext.Result.Message + "\n" + TestContext.CurrentContext.Result.StackTrace;
                 log.Error(error);
-                TakeScreenshot();
+                Extensions.TakeScreenshot(driver, Config.GetSection("Folders")["Screenshot"]);
             }
             if (TestContext.CurrentContext.Result.Outcome == ResultState.Success)
             {
@@ -75,36 +73,6 @@ namespace task1
             PowerShell.Create().AddCommand("Start-Process")
                .AddParameter("FilePath", Config.GetSection("Settings")["WinDriverPath"])
                .Invoke();
-        }
-
-        private void SetUpConfig()
-        {
-            Config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build();
-        }
-
-        private void TakeScreenshot()
-        {
-            driver.GetScreenshot();
-            SaveScreenshot();
-
-        }
-        private void SaveScreenshot()
-        {
-            var fileDateTime = DateTime.Now.ToString("yyyyMMddHHmmss");
-            var screenshotsDirectoryPath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\{Config.GetSection("Folders")["Screenshot"]}";
-            if (!Directory.Exists(screenshotsDirectoryPath))
-            {
-                Directory.CreateDirectory(screenshotsDirectoryPath);
-            }
-            var screenshot = driver.GetScreenshot();
-            screenshot.SaveAsFile(@$"{screenshotsDirectoryPath}\{Guid.NewGuid()}_{fileDateTime}.jpg");
-        }
-        private void SetUpLog4net()
-        {
-            log4net.GlobalContext.Properties["LogFileName"] = @$"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\{Config.GetSection("Folders")["Logs"]}\logs";
-            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

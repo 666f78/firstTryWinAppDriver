@@ -19,6 +19,7 @@ namespace task1
         [TestCaseSource(typeof(TestData), nameof(TestData.SingInWrongData))]
         public void SingInWithWrongData(string Email, string Password)
         {
+            log.Info($"Start test case {TestContext.CurrentContext.Test.Name}");
             new MainPage(driver)
                 .OpenRemoteManager()
                 .SendTextToEmail(Email)

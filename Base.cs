@@ -33,7 +33,7 @@ namespace task1
             options.AddAdditionalCapability("deviceName", "WindowsPC");
             driver = new WindowsDriver<WindowsElement>(new Uri("http://127.0.0.1:4723"), options);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            log.Info($"Start test case {TestContext.CurrentContext.Test.Name}");
+            log.Info($"Init test case {TestContext.CurrentContext.Test.Name}");
         }
 
         [TearDown]
